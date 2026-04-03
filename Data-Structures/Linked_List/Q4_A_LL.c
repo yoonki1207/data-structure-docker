@@ -87,6 +87,41 @@ int main()
 void moveEvenItemsToBack(LinkedList *ll)
 {
 	/* add your code here */
+	if(ll == NULL || ll->head == NULL) { // 비어있으면 그냥 리턴
+		return;
+	}
+	ListNode* evenNumbersHead = malloc(sizeof(ListNode)); // 임시 LL 생성 및 padding node 초기화
+	ListNode* evenNumbersCurr = evenNumbersHead; // 임시 LL indexNode 생성
+	ListNode* curr = ll->head;
+	while(curr != NULL && curr->item % 2 == 0) { // 임시 LL에 앞의 짝수 원소 전부 삽입
+		evenNumbersCurr->next = curr;
+		evenNumbersCurr = evenNumbersCurr->next;
+		curr = curr->next;
+	}
+	if(curr == NULL) { // 모든 원소가 even이라면 return
+		return;
+	}
+	evenNumbersCurr->next = NULL;
+	ll->head = curr;
+	ListNode* prev = curr;
+	curr = curr->next;
+	while(curr != NULL) { // 다음 원소부터 탐색하며 짝수면 임시 LL에 삽입
+		if(curr->item % 2 == 0) {
+			prev->next = curr->next;
+			evenNumbersCurr->next = curr;
+			evenNumbersCurr = evenNumbersCurr->next;
+			curr = curr->next;
+		} else {
+			prev = curr;
+			curr = curr->next;
+		}
+	}
+	evenNumbersCurr->next = NULL;
+	evenNumbersCurr = evenNumbersHead->next;
+	prev->next = evenNumbersCurr;
+	/*
+	1 3 1 7 1 15 1 2 1 4 1 18
+	*/
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

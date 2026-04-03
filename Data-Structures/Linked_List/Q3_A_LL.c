@@ -87,6 +87,49 @@ int main()
 void moveOddItemsToBack(LinkedList *ll)
 {
 	/* add your code here */
+	if(ll == NULL || ll->head == NULL) { // 비어있으면 그냥 리턴
+		return;
+	}
+	ListNode *curr = ll->head;
+	ListNode *tail = ll->head;
+	int cnt = 1; // cnt로 원소 순회 통제
+	while(tail->next != NULL) {
+		tail = tail->next;
+		cnt++;
+	}
+	while(curr != NULL && curr->item % 2 != 0 && cnt > 0) { // 맨 앞이 odd number면 전부 뒤로
+		cnt--;
+		tail->next = curr;
+		ll->head = curr->next;
+		curr->next = NULL;
+		curr = ll->head;
+		tail = tail->next;
+	}
+	ListNode *prev = curr;
+	if(prev == NULL) return;
+	curr = curr->next;
+	--cnt; // next이니까
+	while(curr != NULL && cnt > 0) { // 중간 중간 odd number 전부 뒤로
+		cnt--;
+		if(curr->item % 2 != 0) {
+			prev->next = curr->next;
+			// prev = prev->next;
+
+			tail->next = curr;
+			tail = tail->next;
+			tail->next = NULL;
+
+			curr = prev->next;
+			
+		} else {
+			prev = curr;
+			curr = curr->next;
+		}
+	}
+	/*
+	1 2 1 3 1 4 1 7 1 15 1 18
+	1 1 1 3 1 5 1 2 1 4
+	*/
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

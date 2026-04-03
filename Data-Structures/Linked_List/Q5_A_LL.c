@@ -39,6 +39,7 @@ int removeNode(LinkedList *ll, int index);
 int main()
 {
 	int c, i;
+	c = 1; // 이거 왜 초기화 안 되어있냐
 	LinkedList ll;
 	LinkedList resultFrontList, resultBackList;
 
@@ -103,6 +104,32 @@ int main()
 void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList)
 {
 	/* add your code here */
+	if(ll == NULL || ll->head == NULL) {
+		return;
+	}
+	if(resultFrontList == NULL) {
+		resultFrontList = malloc(sizeof(LinkedList));
+	} else {
+		removeAllItems(resultFrontList);
+	}
+	if(resultBackList == NULL) {
+		resultBackList = malloc(sizeof(LinkedList));
+	} else {
+		removeAllItems(resultBackList);
+	}
+
+	int halfSize = (ll->size + 1) / 2;
+	resultFrontList->size = halfSize;
+	resultBackList->size = ll->size - halfSize;
+	
+	resultFrontList->head = ll->head;
+	ListNode* curr = resultFrontList->head;
+	for(int i = 0; i < halfSize-1; i++) {
+		curr = curr->next;
+	}
+	resultBackList->head = curr->next;
+	curr->next = NULL;
+	ll->head = NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

@@ -71,7 +71,7 @@ int main()
 		case 3:
 			printf("The resulting sorted linked list is: ");
 			printList(&ll);
-			removeAllItems(&ll);
+			// removeAllItems(&ll); // 문제에 따르면 없는게 맞는듯
 			break;
 		case 0:
 			removeAllItems(&ll);
@@ -91,6 +91,38 @@ int main()
 int insertSortedLL(LinkedList *ll, int item)
 {
 	/* add your code here */
+	if(ll == NULL) { // Linked List가 NULL이면 실패
+		return -1;
+	}
+	ListNode *node = malloc(sizeof(ListNode));
+	node->item = item;
+	node->next = NULL;
+	ListNode* curr = ll->head;
+	if(ll->head == NULL) { // Linked List가 비어있으면, head 초기화
+		ll->head = node;
+		return 0;
+	}
+	if(ll->head->item > item) { // 첫 원소보다 작으면 left push
+		node->next = ll->head;
+		ll->head = node;
+		return 0;
+	}
+	int retIndex = 1;
+	while(curr->next != NULL) { // next가 null이 아니라면
+		++retIndex;
+		if(curr->next->item > item) { // next보다 작은지 비교하고 맞으면 삽입, 아니라면 다음 탐색
+			node->next = curr->next;
+			curr->next = node;
+			return retIndex;
+		} else {
+			curr = curr->next;
+		}
+	}
+	curr->next = node; // while문이 끝까지 돌았다는 것은 마지막 원소보다 삽입 원소가 더 큰 것 이므로 맨 뒤에다가 삽입
+	return retIndex;
+	/* 
+	1 2 1 3 1 5 1 7 1 8 1 9
+	 */
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
