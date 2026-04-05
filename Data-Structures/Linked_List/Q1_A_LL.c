@@ -94,31 +94,45 @@ int insertSortedLL(LinkedList *ll, int item)
 	if(ll == NULL) { // Linked List가 NULL이면 실패
 		return -1;
 	}
-	ListNode *node = malloc(sizeof(ListNode));
-	node->item = item;
-	node->next = NULL;
-	ListNode* curr = ll->head;
+	ListNode *node = malloc(sizeof(ListNode)); // (heap 영역 할당)
+	// ListNode node2 = {item, NULL}; // function 끝나면 메모리 해제됨. (stack 영역 할당)
+	node->item = item; // (*node).item = item;
+	node->next = NULL; // (*node).next = NULL;
+	
 	if(ll->head == NULL) { // Linked List가 비어있으면, head 초기화
 		ll->head = node;
+		ll->size++;
 		return 0;
 	}
 	if(ll->head->item > item) { // 첫 원소보다 작으면 left push
 		node->next = ll->head;
 		ll->head = node;
+		ll->size++;
 		return 0;
 	}
+	ListNode* curr = ll->head; // 헤드의 주소를 가져옴. TODO: size 증가해야함
 	int retIndex = 1;
 	while(curr->next != NULL) { // next가 null이 아니라면
-		++retIndex;
 		if(curr->next->item > item) { // next보다 작은지 비교하고 맞으면 삽입, 아니라면 다음 탐색
-			node->next = curr->next;
+			node->next = curr->next; // curr > next  [node]
+			/*
+			curr   next  
+				v   ^
+				[node]
+			*/
 			curr->next = node;
+			ll->size++;
 			return retIndex;
-		} else {
+		} else if (curr->item == item){
+			free(node); // 아이템 중복일 경우 아까 heap 할당한 메모리 해제. 메모리 누수 방지
+			return -1;
+		}else { // 
 			curr = curr->next;
 		}
+		++retIndex;
 	}
 	curr->next = node; // while문이 끝까지 돌았다는 것은 마지막 원소보다 삽입 원소가 더 큰 것 이므로 맨 뒤에다가 삽입
+	ll->size++;
 	return retIndex;
 	/* 
 	1 2 1 3 1 5 1 7 1 8 1 9
