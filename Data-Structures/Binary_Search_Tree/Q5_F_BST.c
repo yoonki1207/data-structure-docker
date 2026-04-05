@@ -92,6 +92,37 @@ int main()
 void postOrderIterativeS2(BSTNode *root)
 {
 	 /* add your code here */
+	 Stack *s1 = malloc(sizeof(Stack));
+	 Stack *s2 = malloc(sizeof(Stack));
+	 if(root == NULL) return;
+	 push(s1, root);
+	 BSTNode *left, *right;
+	 while(isEmpty(s1) == 0) {
+		if(peek(s2) == peek(s1)->right) {
+			push(s2, pop(s1));
+		} else {
+			right = peek(s1)->right;
+			left = peek(s1)->left;
+			if(right == NULL && left == NULL) {
+				push(s2, pop(s1));
+			} else {
+				if(right != NULL) push(s1, right);
+				if(left != NULL) push(s1, left);
+			}
+		}
+	 }
+	//  BSTNode* p = peek(s2); // s1, s2를 스택 메모리로 할당했을 때, 이 코드의 유무에 따라 결과가 有: 에러 안 남, 無: 에러 남. 이유는 해당 코드가 우연히 메모리 배치를 바꿔서? 근본적인 해결책을 위해 동적 할당으로 바꿈.
+	 while(isEmpty(s2) == 0) {
+		push(s1, pop(s2));
+	 } 
+	 while(isEmpty(s1) == 0) {
+		printf("%d ", pop(s1)->item);
+	 }
+	 /*
+	1 20 1 15 1 50 1 10 1 18 1 25 1 80
+	
+	expect: 10 18 15 25 80 50 20
+	*/
 }
 
 /* Given a binary search tree and a key, this function

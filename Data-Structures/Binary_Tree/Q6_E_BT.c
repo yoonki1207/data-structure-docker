@@ -106,6 +106,17 @@ int main()
 void printSmallerValues(BTNode *node, int m)
 {
 	/* add your code here */
+    if(node == NULL) return;
+    if(node->item < m) {
+        printf("%d ", node->item);
+    }
+    printSmallerValues(node->left, m);
+    printSmallerValues(node->right, m);
+    /*
+    1 50 30 60 25 65 a a a a 10 75 a a a a
+    2
+    expect: 50 30 25 10
+    */
 }
 
 //////////////////////////////////////////////////////////////////////////////////

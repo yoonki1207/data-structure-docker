@@ -112,6 +112,13 @@ int main()
 void removeUntil(Stack *s, int value)
 {
 /* add your code here */
+	if(s == NULL) return;
+	while(s->ll.head && s->ll.head->item != value) {
+		// pop(s); use helper function
+		ListNode *delNode = s->ll.head;
+		s->ll.head = s->ll.head->next;
+		free(delNode);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////

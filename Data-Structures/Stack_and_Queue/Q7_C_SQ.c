@@ -105,6 +105,42 @@ int main()
 int balanced(char *expression)
 {
 /* add your code here */
+	if(expression == NULL || *expression == '\0' || *expression == '\n') return -1;
+	Stack s;
+	char* iter = expression;
+	char c = *iter;
+	while (c != '\0' && c != '\n') {
+		if(c == '{' || c == '(' || c == '[') {
+			push(&s, (int)c);
+		} else {
+			if(isEmptyStack(&s)) {
+				return -1;
+			} else {
+				char top = (char)peek(&s);
+				switch (top) {
+				case '(':
+					if (c == ')') pop(&s);
+					break;
+				case '[':
+					if (c == ']') pop(&s);
+					break;
+				case '{':
+					if (c == '}') pop(&s);
+					break;
+				
+				default:
+					break;
+				}
+			}
+		}
+		iter++;
+		c = *iter;
+	}
+	if(isEmptyStack(&s)) {
+		return 0;
+	} else {
+		return -1;
+	}
 }
 
 ////////////////////////////////////////////////////////////

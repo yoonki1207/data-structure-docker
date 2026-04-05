@@ -90,7 +90,37 @@ int main()
 
 void inOrderTraversal(BSTNode *root)
 {
-	 /* add your code here */
+	/* add your code here */
+	Stack s;
+	BSTNode* curr = root;
+	// push(&s, curr);
+	while(1) {
+		while(curr != NULL) { // 왼쪽 끝까지 삽입
+			push(&s, curr);
+			curr = curr->left;
+		}
+		curr = pop(&s); // 빼면서 출력 준비
+		while(curr) { 
+			printf("%d ", curr->item); // 출력
+			if(curr->right != NULL) { // 뺀 놈의 오른쪽 자식이 있으면 curr을 그걸로 설정하고 break
+				curr = curr->right;
+				break;
+			} else {
+				curr = pop(&s); // 오른쪽 자식이 없으면 다음 스택 pop
+			}
+		}
+		if(curr == NULL) {
+			break;
+		}
+	}
+	// 50 20 18 15 10
+	// peek, pop, push push push
+	/*
+	1 20 1 15 1 50 1 10 1 18
+	left를 끝까지 넣는다.
+	left가 null이면, pop한다. 그 후 Right를 push 한다.
+	반복
+	*/
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -93,8 +93,21 @@ int main()
 
 void levelOrderTraversal(BSTNode* root)
 {
-
-    /* add your code here */
+	if(root == NULL) return;
+	Queue q;
+	enqueue(&q.head, &q.tail, root);
+	BSTNode* node = NULL;
+	while(isEmpty(q.head) == 0) {
+		node = q.head->data;
+		if(node == NULL) break;
+		printf("%d ", node->item);
+		enqueue(&q.head, &q.tail, node->left);
+		enqueue(&q.head, &q.tail, node->right);
+		dequeue(&q.head, &q.tail);
+	}
+	/*
+	1 20 1 15 1 50 1 10 1 18 1 25 1 80
+	*/
 }
 
 ///////////////////////////////////////////////////////////////////////////////

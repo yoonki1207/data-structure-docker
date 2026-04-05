@@ -104,6 +104,29 @@ int main()
 int isStackPairwiseConsecutive(Stack *s)
 {
   /* add your code here */
+  if(s == NULL || s->ll.head == NULL) {
+	return 0;
+  }
+  ListNode* prev = s->ll.head; // 홀수번째
+  ListNode* curr = prev->next; // 짝수번째
+  while(prev != NULL && curr != NULL) {
+	int a = prev->item, b = curr->item; 
+	if(a < b) { // prevent overflow
+		int t = a; a = b; b = t;
+	}
+	if(a - b != 1) {
+		return 0;
+	}
+	prev = curr->next; // 다다음
+	if(prev == NULL) { // $1 NULL이라면 전부 탐색한 것이니 return 1
+		return 1;
+	}
+	curr = curr->next->next;
+  }
+  return 0; // 번호 $1에서 안 걸리면 prev != NULL, curr == NULL이라는 뜻이니 원소의 개수가 홀수라는 뜻. 즉, 실패. return 0
+  /*
+  1 16 1 15 1 11 1 10 1 5 1 4
+  */
 }
 
 //////////////////////////////////////////////////////////////////////////////////

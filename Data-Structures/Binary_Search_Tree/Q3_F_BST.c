@@ -91,7 +91,36 @@ int main()
 
 void preOrderIterative(BSTNode *root)
 {
-	 /* add your code here */
+	/* add your code here */
+	Stack s;
+	BSTNode* curr = root;
+	// push(&s, curr);
+	while(1) {
+		while(curr != NULL) { // 왼쪽 끝까지 삽입
+			push(&s, curr);
+			printf("%d ", curr->item); // 출력
+			curr = curr->left;
+		}
+		curr = pop(&s); // 빼면서 출력 준비
+		while(curr) { 
+			if(curr->right != NULL) { // 뺀 놈의 오른쪽 자식이 있으면 curr을 그걸로 설정하고 break
+				curr = curr->right;
+				break;
+			} else {
+				curr = pop(&s); // 오른쪽 자식이 없으면 다음 스택 pop
+			}
+		}
+		if(curr == NULL) {
+			break;
+		}
+	}
+	// 
+	// peek, pop, push push push
+	/*
+	1 20 1 15 1 50 1 10 1 18 1 25 1 80
+	
+	expect: 20 15 10 18 50 25 80
+	*/
 }
 
 ///////////////////////////////////////////////////////////////////////////////
