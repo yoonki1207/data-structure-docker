@@ -91,33 +91,23 @@ int main()
 
 void postOrderIterativeS2(BSTNode *root)
 {
-	 /* add your code here */
-	 Stack *s1 = malloc(sizeof(Stack));
-	 Stack *s2 = malloc(sizeof(Stack));
-	 if(root == NULL) return;
-	 push(s1, root);
-	 BSTNode *left, *right;
-	 while(isEmpty(s1) == 0) {
-		if(peek(s2) == peek(s1)->right) {
-			push(s2, pop(s1));
-		} else {
-			right = peek(s1)->right;
-			left = peek(s1)->left;
-			if(right == NULL && left == NULL) {
-				push(s2, pop(s1));
-			} else {
-				if(right != NULL) push(s1, right);
-				if(left != NULL) push(s1, left);
-			}
-		}
-	 }
-	//  BSTNode* p = peek(s2); // s1, s2를 스택 메모리로 할당했을 때, 이 코드의 유무에 따라 결과가 有: 에러 안 남, 無: 에러 남. 이유는 해당 코드가 우연히 메모리 배치를 바꿔서? 근본적인 해결책을 위해 동적 할당으로 바꿈.
-	 while(isEmpty(s2) == 0) {
-		push(s1, pop(s2));
-	 } 
-	 while(isEmpty(s1) == 0) {
-		printf("%d ", pop(s1)->item);
-	 }
+	/* add your code here */
+	Stack *s1 = malloc(sizeof(Stack));
+	s1->top = NULL;
+	Stack *s2 = malloc(sizeof(Stack));
+	s2->top = NULL;
+	if(root == NULL) return;
+	push(s1, root);
+	BSTNode* node = NULL;
+	while(isEmpty(s1) == 0) {
+		node = pop(s1);
+		if(node->left != NULL) push(s1, node->left);
+		if(node->right != NULL) push(s1, node->right);
+		push(s2, node);
+	}
+	while(isEmpty(s2) == 0) {
+		printf("%d ", pop(s2)->item);
+	}
 	 /*
 	1 20 1 15 1 50 1 10 1 18 1 25 1 80
 	
@@ -130,6 +120,39 @@ void postOrderIterativeS2(BSTNode *root)
 BSTNode* removeNodeFromTree(BSTNode *root, int value)
 {
 	/* add your code here */
+	if(root == NULL) return NULL;
+	if(root->item == value) {
+		if(root->left == NULL) {
+			return root->right;
+		} else if(root->right == NULL) {
+			return root->left;
+		} else {
+			// 왼쪽 서브 트리에서 가장 큰 노드
+			BSTNode *tmp = root->left;
+			BSTNode *prev = NULL;
+			while(tmp->right != NULL) {
+				prev = tmp;
+				tmp = tmp->right;
+			}
+			BSTNode* right = root->right;
+			BSTNode* left = root->left;
+			BSTNode *tmp_left = tmp->left;
+			if(prev != NULL) {
+				prev->right = tmp_left;
+				tmp->left = left;
+				tmp->right = right;
+			} else {
+				tmp->right = right;
+			}
+			free(root);
+			return tmp;
+		}
+	} else if(root->item < value && root->right != NULL) {
+		root->right = removeNodeFromTree(root->right, value);
+	} else if(root->item > value && root->left != NULL) {
+		root->left = removeNodeFromTree(root->left, value);
+	}
+	return root;
 }
 ///////////////////////////////////////////////////////////////////////////////
 
